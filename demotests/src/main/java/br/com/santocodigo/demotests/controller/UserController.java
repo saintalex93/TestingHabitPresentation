@@ -25,13 +25,13 @@ public class UserController
     private UserService service;
 
     @GetMapping( "/find-all" )
-    private List<User> addUser()
+    private List<User> findAll()
     {
         return service.findAll();
     }
 
     @PostMapping( "/login" )
-    private ResponseEntity<ResponseMessage> addUser(
+    private ResponseEntity<ResponseMessage> login(
         @RequestBody final User user )
     {
         final ResponseMessage responseMessage = service.login( user );
@@ -42,7 +42,7 @@ public class UserController
     }
 
     @PostMapping( "/create" )
-    private User createUser(
+    private User create(
         @RequestBody final User user )
     {
         return service.create( user );

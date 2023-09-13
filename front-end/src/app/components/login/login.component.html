@@ -1,0 +1,22 @@
+<div class="container d-flex align-items-center justify-content-center vh-100">
+  <div class="card" style="width: 25rem;">
+    <div class="card-body">
+      <h3 class="card-title text-center">Login</h3>
+      <form ngNativeValidate (ngSubmit)="login()">
+        <div class="mb-3">
+          <label for="formGroupExampleInput" class="form-label">Email</label>
+          <input type="email" [(ngModel)]="user.email" name="email" required class="form-control"
+            placeholder="email@totvs.com.br">
+        </div>
+        <div class="mb-3">
+          <label for="formGroupExampleInput" class="form-label">Senha</label>
+          <input type="password" [(ngModel)]="user.password" name="password" required class="form-control"
+            placeholder="******">
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-outline-secondary">Entrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

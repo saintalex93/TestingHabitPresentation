@@ -1,0 +1,316 @@
+{
+	"info": {
+		"_postman_id": "0a6b1787-fbce-43ec-a40a-92625793f309",
+		"name": "TestingHabitPresentationCollection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29712718"
+	},
+	"item": [
+		{
+			"name": "success",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Data test\", function () {\r",
+									"   let responseMessage = pm.response.json()\r",
+									"   pm.expect(responseMessage.token).to.be.not.eql(null)\r",
+									"   pm.expect(responseMessage.message).to.be.eql(\"Usuário encontrado!\")\r",
+									"   pm.expect(responseMessage.success).to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"{{email}}\",\r\n    \"password\":\"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}{{user_url}}/login",
+							"host": [
+								"{{base_url}}{{user_url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FindAll",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Data test\", function () {\r",
+									"    let users = pm.response.json()\r",
+									"    pm.expect(users.length).to.be.greaterThan(0)\r",
+									"    pm.expect(users.some((user)=>user.email === \"alex.santos@totvs.com.br\")).to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}{{user_url}}/find-all",
+							"host": [
+								"{{base_url}}{{user_url}}"
+							],
+							"path": [
+								"find-all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Data test\", function () {\r",
+									"    let user = pm.response.json()\r",
+									"    pm.expect(user.id).to.be.not.null\r",
+									"    pm.expect(user.email).to.be.eq(\"postman.user@totvs.com.br\")\r",
+									"    pm.expect(user.password).to.be.eq(\"Teste@123\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"postman.user@totvs.com.br\",\r\n    \"password\":\"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}{{user_url}}/create",
+							"host": [
+								"{{base_url}}{{user_url}}"
+							],
+							"path": [
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateAndLogin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Data test\", function () {\r",
+									"    let user = pm.response.json()\r",
+									"    pm.expect(user.id).to.be.not.null\r",
+									"    pm.expect(user.email).to.be.eq(\"newuserpostman@totvs.com.br\")\r",
+									"    pm.expect(user.password).to.be.eq(\"Teste@123\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const echoPostRequest = {\r",
+									"  url: \"https://localhost:8070/user/create\",\r",
+									"  method: 'POST',\r",
+									"  header: {\r",
+									"        'content-type': 'application/json',\r",
+									"    },\r",
+									"  body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({ email: 'newuserpostman@totvs.com.br', password: 'Teste@123' })\r",
+									"    }\r",
+									"};\r",
+									"pm.sendRequest(echoPostRequest, function (err, response) {\r",
+									"    var data = response.json();\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"newuserpostman@totvs.com.br\",\r\n    \"password\":\"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}{{user_url}}/create",
+							"host": [
+								"{{base_url}}{{user_url}}"
+							],
+							"path": [
+								"create"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "fail",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Data test\", function () {\r",
+									"   let responseMessage = pm.response.json()\r",
+									"   pm.expect(responseMessage.token).to.be.eql(null)\r",
+									"   pm.expect(responseMessage.message).to.be.eql(\"Usuário não encontrado.\")\r",
+									"   pm.expect(responseMessage.success).to.be.false;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"invalid.user@totvs.com.br\",\r\n    \"password\":\"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}{{user_url}}/login",
+							"host": [
+								"{{base_url}}{{user_url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8070",
+			"type": "string"
+		},
+		{
+			"key": "user_url",
+			"value": "/user",
+			"type": "string"
+		},
+		{
+			"key": "email",
+			"value": "alex.santos@totvs.com.br",
+			"type": "string"
+		},
+		{
+			"key": "password",
+			"value": "Teste@123",
+			"type": "string"
+		}
+	]
+}
