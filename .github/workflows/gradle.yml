@@ -13,3 +13,5 @@ jobs:
         distribution: 'adopt'
     - name: Build with Gradle
       run: cd demotests && ./gradlew build
+    - name: Make gradlew executable
+      run: chmod +x demotests/gradlew
