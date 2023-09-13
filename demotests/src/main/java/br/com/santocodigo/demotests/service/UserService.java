@@ -20,9 +20,9 @@ public class UserService
     public ResponseMessage login(
         final User user )
     {
-        if( repository.existsByEmailAndPassword( user.getEmail(), user.getPassword() ) ) {
-            return ResponseMessage.success( UUID.randomUUID().toString() );
-        }
+        // if( repository.existsByEmailAndPassword( user.getEmail(), user.getPassword() ) ) {
+        //     return ResponseMessage.success( UUID.randomUUID().toString() );
+        // }
         return ResponseMessage.error();
     }
 
