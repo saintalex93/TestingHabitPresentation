@@ -16,11 +16,8 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x demotests/gradlew
 
-      - name: Unit Tests
-        run: cd demotests && ./gradlew test -x integrationTest
-
-      - name: Integration Tests
-        run: cd demotests && ./gradlew integrationTest
+      - name: Tests
+        run: cd demotests && ./gradlew clean test 
 
       - name: Get Allure history
         uses: actions/checkout@v2
