@@ -22,8 +22,7 @@ compileTestJava { options.encoding = "ISO-8859-1" }
 
 allure {
     version = '2.14.0'
-    //resultsDir = file(project.projectDir.toString()+'/reports/allure-results')
-    
+    resultsDir = file(project.projectDir.toString()+'/reports/allure-results')
 }
 
 
