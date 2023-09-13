@@ -29,10 +29,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.santocodigo.demotests.model.ResponseMessage;
 import br.com.santocodigo.demotests.model.User;
+import io.qameta.allure.Epic;
 
 @SpringBootTest( webEnvironment = WebEnvironment.RANDOM_PORT )
 @AutoConfigureMockMvc
 @ActiveProfiles( "test" )
+@Epic("User Integration Test")
 public class UserIntegrationTest
 {
 

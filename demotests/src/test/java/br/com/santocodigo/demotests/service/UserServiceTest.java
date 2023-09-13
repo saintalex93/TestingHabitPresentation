@@ -18,8 +18,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import br.com.santocodigo.demotests.model.ResponseMessage;
 import br.com.santocodigo.demotests.model.User;
 import br.com.santocodigo.demotests.repository.UserRepository;
+import io.qameta.allure.Epic;
 
 @ExtendWith( MockitoExtension.class )
+@Epic("User Unit Test")
 class UserServiceTest
 {
 
