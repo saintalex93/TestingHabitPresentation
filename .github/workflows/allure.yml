@@ -1,43 +1,46 @@
-name: allure-report
+name: allure-repport
 
-on:
-  release:
-    types:
-      - created
-  push:
-    branches-ignore:
-      - '!master'
+on: [ push ]
 
 jobs:
-  allure:
-    name: Generate Allure Report
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      - name: Set up JDK 8
+        uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+          distribution: 'adopt'
+
+      - name: Run Test
+        if: always()
+        run: mvn package
+        continue-on-error: true
 
       - name: Get Allure history
         uses: actions/checkout@v2
         if: always()
         continue-on-error: true
         with:
-          ref: gh-pages
-          path: gh-pages
+          ref: master
+          path: master
 
       - name: Allure Report action from marketplace
         uses: simple-elf/allure-report-action@master
         if: always()
-        #id: allure-report
+        id: allure-report
         with:
-          allure_results: allure-results
-          #gh_pages: gh-pages
-          #allure_report: allure-report
+          allure_results: target/allure-results
+          gh_pages: master
+          allure_report: allure-report
           allure_history: allure-history
-          keep_reports: 20
 
       - name: Deploy report to Github Pages
         if: always()
         uses: peaceiris/actions-gh-pages@v2
         env:
           PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUBLISH_BRANCH: gh-pages
+          PUBLISH_BRANCH: master
           PUBLISH_DIR: allure-history
