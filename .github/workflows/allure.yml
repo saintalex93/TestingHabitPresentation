@@ -7,33 +7,36 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
-      - name: Set up JDK 8
+      - name: Set up JDK 11
         uses: actions/setup-java@v2
         with:
-          java-version: '8'
+          java-version: '11'
           distribution: 'adopt'
 
-      - name: Run Test
-        if: always()
-        run: mvn package
-        continue-on-error: true
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Unit Tests
+        run: ./gradlew test -x integrationTest
+
+      - name: Integration Tests
+        run: ./gradlew integrationTest
 
       - name: Get Allure history
         uses: actions/checkout@v2
         if: always()
         continue-on-error: true
         with:
-          ref: master
-          path: master
+          ref: gh-pages
+          path: gh-pages
 
       - name: Allure Report action from marketplace
         uses: simple-elf/allure-report-action@master
         if: always()
         id: allure-report
         with:
-          allure_results: target/allure-results
-          gh_pages: master
+          allure_results: allure-results
+          gh_pages: gh-pages
           allure_report: allure-report
           allure_history: allure-history
 
@@ -42,5 +45,5 @@ jobs:
         uses: peaceiris/actions-gh-pages@v2
         env:
           PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUBLISH_BRANCH: master
+          PUBLISH_BRANCH: gh-pages
           PUBLISH_DIR: allure-history
