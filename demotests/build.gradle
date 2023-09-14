@@ -47,7 +47,6 @@ dependencies {
 
 build.dependsOn jacocoTestReport
 
-
 tasks.named('test') {
 	useJUnitPlatform()
 	
