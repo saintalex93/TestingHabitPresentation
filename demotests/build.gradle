@@ -26,6 +26,9 @@ allure {
     resultsDir = file(project.projectDir.toString()+'/reports/allure-results')
 }
 
+jacoco{
+    reportsDirectory = file(project.projectDir.toString()+'/reports/jacoco')
+}
 
 repositories {
 	mavenCentral()
