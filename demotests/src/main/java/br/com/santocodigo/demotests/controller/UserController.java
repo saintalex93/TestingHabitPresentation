@@ -24,13 +24,13 @@ public class UserController
     @Autowired
     private UserService service;
 
-    @GetMapping( "/find-all" )
+    @GetMapping( "find-all" )
     private List<User> findAll()
     {
         return service.findAll();
     }
 
-    @PostMapping( "/login" )
+    @PostMapping( "login" )
     private ResponseEntity<ResponseMessage> login(
         @RequestBody final User user )
     {
@@ -41,7 +41,7 @@ public class UserController
         return ResponseEntity.badRequest().body( responseMessage );
     }
 
-    @PostMapping( "/create" )
+    @PostMapping( "create" )
     private User create(
         @RequestBody final User user )
     {

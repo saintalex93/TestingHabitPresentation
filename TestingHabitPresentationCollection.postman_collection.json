@@ -175,7 +175,7 @@
 							"script": {
 								"exec": [
 									"const echoPostRequest = {\r",
-									"  url: \"https://localhost:8070/user/create\",\r",
+									"  url: \"http://localhost:8070/user/create\",\r",
 									"  method: 'POST',\r",
 									"  header: {\r",
 									"        'content-type': 'application/json',\r",
