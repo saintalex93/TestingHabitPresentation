@@ -3,6 +3,7 @@ package br.com.santocodigo.demotests.service;
 import static org.apache.logging.log4j.util.Strings.isEmpty;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,11 +22,11 @@ public class UserService
     public ResponseMessage login(
         final User user )
     {
-//        checkUser( user );
-//
-//        if( repository.existsByEmailAndPassword( user.getEmail(), user.getPassword() ) ) {
-//            return ResponseMessage.success( UUID.randomUUID().toString() );
-//        }
+        checkUser( user );
+
+        if( repository.existsByEmailAndPassword( user.getEmail(), user.getPassword() ) ) {
+            return ResponseMessage.success( UUID.randomUUID().toString() );
+        }
         return ResponseMessage.error();
     }
 
@@ -44,7 +45,7 @@ public class UserService
     public User create(
         final User user )
     {
-//        checkUser( user );
+        checkUser( user );
 
         return repository.save( user );
     }
