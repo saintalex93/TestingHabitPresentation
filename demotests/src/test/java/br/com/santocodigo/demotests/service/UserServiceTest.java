@@ -42,7 +42,7 @@ class UserServiceTest
     {
         when( userRepository.existsByEmailAndPassword( EMAIL, PASSWORD ) ).thenReturn( false );
 
-        final ResponseMessage responseMessage = subject.login( createUser( EMAIL ) );
+        final ResponseMessage responseMessage = subject.login( buildUser( EMAIL ) );
         assertFalse( responseMessage.isSuccess() );
         assertNull( responseMessage.getToken() );
         assertEquals( "Usuário não encontrado.", responseMessage.getMessage() );
@@ -53,16 +53,46 @@ class UserServiceTest
     {
         when( userRepository.existsByEmailAndPassword( EMAIL, PASSWORD ) ).thenReturn( true );
 
-        final ResponseMessage responseMessage = subject.login( createUser( EMAIL ) );
+        final ResponseMessage responseMessage = subject.login( buildUser( EMAIL ) );
         assertTrue( responseMessage.isSuccess() );
         assertNotNull( responseMessage.getToken() );
         assertEquals( "Usuário encontrado!", responseMessage.getMessage() );
     }
 
     @Test
+    public void shouldThrowExceptionWhenLoginWithNullUser()
+    {
+        final Exception exception = assertThrows( IllegalArgumentException.class, () -> {
+            subject.login( null );
+        } );
+
+        assertEquals( "O usuário está inválido.", exception.getMessage() );
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenLoginWithNullEmail()
+    {
+        final Exception exception = assertThrows( IllegalArgumentException.class, () -> {
+            subject.login( buildUser( null ) );
+        } );
+
+        assertEquals( "Email ou senha inválidos.", exception.getMessage() );
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenLoginWithNullPassword()
+    {
+        final Exception exception = assertThrows( IllegalArgumentException.class, () -> {
+            subject.login( buildUser( EMAIL, null ) );
+        } );
+
+        assertEquals( "Email ou senha inválidos.", exception.getMessage() );
+    }
+
+    @Test
     public void shouldCreateUser()
     {
-        final User user = createUser( EMAIL );
+        final User user = buildUser( EMAIL );
         subject.create( user );
         verify( userRepository ).save( user );
     }
@@ -74,13 +104,33 @@ class UserServiceTest
             subject.create( null );
         } );
 
-        assertEquals( "User is null", exception.getMessage() );
+        assertEquals( "O usuário está inválido.", exception.getMessage() );
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenCreateWithNullEmail()
+    {
+        final Exception exception = assertThrows( IllegalArgumentException.class, () -> {
+            subject.create( buildUser( null ) );
+        } );
+
+        assertEquals( "Email ou senha inválidos.", exception.getMessage() );
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenCreateWithNullPassword()
+    {
+        final Exception exception = assertThrows( IllegalArgumentException.class, () -> {
+            subject.create( buildUser( EMAIL, null ) );
+        } );
+
+        assertEquals( "Email ou senha inválidos.", exception.getMessage() );
     }
 
     @Test
     public void shouldRetrieveUser()
     {
-        final User expectedUser = createUser( EMAIL );
+        final User expectedUser = buildUser( EMAIL );
         when( userRepository.findAll() ).thenReturn( singletonList( expectedUser ) );
 
         final List<User> users = subject.findAll();
@@ -100,10 +150,17 @@ class UserServiceTest
         assertTrue( users.isEmpty() );
     }
 
-    private User createUser(
+    private User buildUser(
         final String email )
     {
         return User.builder().email( email ).password( PASSWORD ).build();
+    }
+
+    private User buildUser(
+        final String email,
+        final String password )
+    {
+        return User.builder().email( email ).password( password ).build();
     }
 
 }
