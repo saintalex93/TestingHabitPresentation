@@ -1,4 +1,6 @@
 # TestingHabitPresentation
+O projeto será utilizado para a apresentação "O hábito de criar testes como parte da entrega". Ele possui um Back-end escrito em Java com Spring Web, Front-end com Angular, banco de dados H2 em memória, testes em JUnit, Cypress e Postman Collections.
+Os relatórios são feitos com o Allure, Jacoco e Newman.
 
 ## Subindo o ambiente:
 
