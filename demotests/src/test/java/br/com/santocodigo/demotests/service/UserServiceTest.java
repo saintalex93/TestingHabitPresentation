@@ -38,17 +38,6 @@ class UserServiceTest
     private UserRepository repository;
 
     @Test
-    public void shouldLoginFailWhenUserNotFound()
-    {
-        when( repository.existsByEmailAndPassword( EMAIL, PASSWORD ) ).thenReturn( false );
-
-        final ResponseMessage responseMessage = subject.login( buildUser( EMAIL ) );
-        assertFalse( responseMessage.isSuccess() );
-        assertNull( responseMessage.getToken() );
-        assertEquals( "Usuário não encontrado.", responseMessage.getMessage() );
-    }
-
-    @Test
     public void shouldLoginSuccessfully()
     {
         when( repository.existsByEmailAndPassword( EMAIL, PASSWORD ) ).thenReturn( true );
@@ -57,6 +46,17 @@ class UserServiceTest
         assertTrue( responseMessage.isSuccess() );
         assertNotNull( responseMessage.getToken() );
         assertEquals( "Usuário encontrado!", responseMessage.getMessage() );
+    }
+
+    @Test
+    public void shouldLoginFailWhenUserNotFound()
+    {
+        when( repository.existsByEmailAndPassword( EMAIL, PASSWORD ) ).thenReturn( false );
+
+        final ResponseMessage responseMessage = subject.login( buildUser( EMAIL ) );
+        assertFalse( responseMessage.isSuccess() );
+        assertNull( responseMessage.getToken() );
+        assertEquals( "Usuário não encontrado.", responseMessage.getMessage() );
     }
 
     @Test
