@@ -35,12 +35,12 @@ class UserServiceTest
     @InjectMocks
     private UserService subject;
     @Mock
-    private UserRepository userRepository;
+    private UserRepository repository;
 
     @Test
     public void shouldLoginFailWhenUserNotFound()
     {
-        when( userRepository.existsByEmailAndPassword( EMAIL, PASSWORD ) ).thenReturn( false );
+        when( repository.existsByEmailAndPassword( EMAIL, PASSWORD ) ).thenReturn( false );
 
         final ResponseMessage responseMessage = subject.login( buildUser( EMAIL ) );
         assertFalse( responseMessage.isSuccess() );
@@ -51,7 +51,7 @@ class UserServiceTest
     @Test
     public void shouldLoginSuccessfully()
     {
-        when( userRepository.existsByEmailAndPassword( EMAIL, PASSWORD ) ).thenReturn( true );
+        when( repository.existsByEmailAndPassword( EMAIL, PASSWORD ) ).thenReturn( true );
 
         final ResponseMessage responseMessage = subject.login( buildUser( EMAIL ) );
         assertTrue( responseMessage.isSuccess() );
@@ -94,7 +94,7 @@ class UserServiceTest
     {
         final User user = buildUser( EMAIL );
         subject.create( user );
-        verify( userRepository ).save( user );
+        verify( repository ).save( user );
     }
 
     @Test
@@ -131,22 +131,22 @@ class UserServiceTest
     public void shouldRetrieveUser()
     {
         final User expectedUser = buildUser( EMAIL );
-        when( userRepository.findAll() ).thenReturn( singletonList( expectedUser ) );
+        when( repository.findAll() ).thenReturn( singletonList( expectedUser ) );
 
         final List<User> users = subject.findAll();
 
-        verify( userRepository ).findAll();
+        verify( repository ).findAll();
         assertTrue( users.contains( expectedUser ) );
     }
 
     @Test
     public void shouldRetrieveEmptyListOfUser()
     {
-        when( userRepository.findAll() ).thenReturn( Collections.emptyList() );
+        when( repository.findAll() ).thenReturn( Collections.emptyList() );
 
         final List<User> users = subject.findAll();
 
-        verify( userRepository ).findAll();
+        verify( repository ).findAll();
         assertTrue( users.isEmpty() );
     }
 
