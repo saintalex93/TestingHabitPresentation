@@ -19,3 +19,6 @@ Os relatórios são feitos com o Allure, Jacoco e Newman.
 ## Relatórios Allure:
 
 * No diretório demotests, rode o comando `gradlew clean build && cd reports && npx allure-commandline serve`
+
+## Vídeo da Apresentação TOTVS Developers:
+https://www.youtube.com/watch?v=gCmzwPAj8ng&ab_channel=TOTVSDevelopers
