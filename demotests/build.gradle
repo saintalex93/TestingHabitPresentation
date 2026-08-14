@@ -1,17 +1,17 @@
 plugins {
-	id 'java'
-	id 'jacoco'
-	id 'org.springframework.boot' version '2.7.15'
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'java'
+    id 'jacoco'
+    id 'org.springframework.boot' version '2.7.15'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id 'io.qameta.allure' version '2.8.1'
-	
+    id 'info.solidsoft.pitest' version '1.5.1'
 }
 
 group = 'br.com.santocodigo'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '1.8'
+    sourceCompatibility = '1.8'
 }
 
 configurations {
@@ -27,29 +27,28 @@ allure {
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'io.qameta.allure:allure-junit5:2.14.0'
-	
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.h2database:h2'
-	annotationProcessor 'org.projectlombok:lombok'
+    
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'com.h2database:h2'
+    annotationProcessor 'org.projectlombok:lombok'
 }
 
 build.dependsOn jacocoTestReport
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
     testLogging {
         events "passed", "skipped", "failed"
     }
 }
-
 
 jacocoTestReport {
     reports {
@@ -64,4 +63,25 @@ jacocoTestReport {
             ])
         }))
     }
+}
+
+pitest {
+    targetClasses = ['br.com.santocodigo.demotests.*']
+    threads = 4
+    outputFormats = ['XML', 'HTML']
+    junit5PluginVersion = '0.15'
+    
+    // Add these to prevent Spring from starting during mutation testing
+    testPlugin = "junit5"
+    avoidCallsTo = ['org.springframework', 'org.slf4j', 'org.apache.log4j']
+    excludedClasses = [
+        'br.com.santocodigo.demotests.*Application*',  // Exclude main application class
+        'br.com.santocodigo.demotests.config.*'       // Exclude config classes if needed
+    ]
+        reportDir = file("$buildDir/reports/pitest")  // Explicit output directory
+    
+    
+    // Use these if you need to set specific JVM args
+    jvmArgs = ['-Dspring.profiles.active=test']
+    
 }
